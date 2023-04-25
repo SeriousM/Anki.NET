@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace AnkiNet;
+﻿namespace AnkiNet;
 
 public record AnkiDeck
 {
