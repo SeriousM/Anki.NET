@@ -1,0 +1,44 @@
+name: Build and publish NuGet package to GitHub Packages
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  # Replace the following with your own package name
+  PACKAGE_NAME: Anki.Net-mod
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.100'
+
+    - name: Set package version
+      run: echo "::set-env name=PACKAGE_VERSION::$(date +"%Y.%j").$(echo $GITHUB_RUN_NUMBER)"
+
+    - name: Build
+      run: dotnet build -c Release
+
+    - name: Create NuGet package
+      run: dotnet pack -c Release /p:PackageVersion=${PACKAGE_VERSION}
+
+    - name: Publish package to GitHub Packages
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.GITHUB_TOKEN }}
+        nuget-version: 'latest'
+
+    - name: Add GitHub Packages as a NuGet source
+      run: nuget sources add -name "GitHub Packages" -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username ${{ github.actor }} -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
+
+    - name: Push package to GitHub Packages
+      run: nuget push -Source "GitHub Packages" -ApiKey ${{ secrets.GITHUB_TOKEN }} ${GITHUB_WORKSPACE}/bin/Release/${{ env.PACKAGE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg
