@@ -117,7 +117,7 @@ public class AnkiCollection
     /// <param name="noteType"></param>
     /// <param name="fields"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public void AddNote(AnkiDeck deck, AnkiNoteType noteType, params string[] fields)
+    public AnkiNote AddNote(AnkiDeck deck, AnkiNoteType noteType, params string[] fields)
     {
         if (!_decks.ContainsKey(deck.Id))
         {
@@ -167,5 +167,7 @@ public class AnkiCollection
             _cards.Add(newCardId, newCard);
             _decks[deck.Id].Cards.Add(newCard);
         }
+
+        return note;
     }
 }
