@@ -219,7 +219,7 @@ public class AnkiFileWriter
             // TODO Get note ID and sync it with model id (note type ID)
             Notes = allNotes.Select(n => new Note(
                 n.Id,
-                Guid.NewGuid().ToString().Substring(0, 10), // string Guid,
+                n.Guid, // string Guid,
                 n.NoteTypeId, // long ModelId,
                 0, // long ModificationDateTime, // TODO Convert to DateTime?
                 0, // long UpdateSequenceNumber,
