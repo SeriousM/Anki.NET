@@ -41,7 +41,7 @@ jobs:
       run: dotnet build -c Release ${{ env.PROJECT_FILE }}
 
     - name: Create NuGet package
-      run: dotnet pack -c Release /p:PackageVersion=${{ steps.t1.outputs.year }}.${{ steps.t1.outputs.time }}.${{ github.run_id }} ${{ env.PROJECT_FILE }}
+      run: dotnet pack -c Release /p:PackageVersion=${{ steps.t1.outputs.year }}.${{ steps.t1.outputs.week_of_year }}.${{ github.run_id }} ${{ env.PROJECT_FILE }}
 
     - name: Publish package to GitHub Packages
       uses: nuget/setup-nuget@v1
@@ -53,4 +53,4 @@ jobs:
       run: nuget sources add -name "GitHub Packages" -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username ${{ github.actor }} -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
 
     - name: Push package to GitHub Packages
-      run: nuget push -Source "GitHub Packages" -ApiKey ${{ secrets.GITHUB_TOKEN }} ${{ github.workspace }}/${{ env.PROJECT_PATH }}/bin/Release/${{ env.PACKAGE_NAME }}.${{ steps.t1.outputs.year }}.${{ steps.t1.outputs.time }}.${{ github.run_id }}.nupkg
+      run: nuget push -Source "GitHub Packages" -ApiKey ${{ secrets.GITHUB_TOKEN }} ${{ github.workspace }}/${{ env.PROJECT_PATH }}/bin/Release/${{ env.PACKAGE_NAME }}.${{ steps.t1.outputs.year }}.${{ steps.t1.outputs.week_of_year }}.${{ github.run_id }}.nupkg
