@@ -41,7 +41,7 @@ jobs:
       run: dotnet build -c Release ${{ env.PROJECT_FILE }}
 
     - name: Create NuGet package
-      run: dotnet pack -c Release /p:PackageVersion=${{ steps.t1.outputs.year }}.${{ steps.t1.outputs.week_of_year }}.${{ github.run_number }} ${{ env.PROJECT_FILE }}
+      run: dotnet pack -c Release --include-source /p:PackageVersion=${{ steps.t1.outputs.year }}.${{ steps.t1.outputs.week_of_year }}.${{ github.run_number }} ${{ env.PROJECT_FILE }}
 
     - name: Publish package to GitHub Packages
       uses: nuget/setup-nuget@v1

@@ -14,15 +14,15 @@
 
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
-    <PackageId>Anki.NET</PackageId>
+    <PackageId>Anki.NET-mod</PackageId>
     <PackageVersion>1.0</PackageVersion>
-    <Authors>Lysrt,Clement-Jean</Authors>
+    <Authors>Bernhard Millauer,Lysrt,Clement-Jean</Authors>
     <Description>Anki.NET allows you to create Anki decks and cards from your C# application.</Description>
     <PackageTags>anki deck decks card cards</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
-    <PackageProjectUrl>https://github.com/lysrt/Anki.NET</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/lysrt/Anki.NET</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/seriousm/Anki.NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/seriousm/Anki.NET</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
