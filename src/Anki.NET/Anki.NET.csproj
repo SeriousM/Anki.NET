@@ -27,6 +27,7 @@
 
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ReleaseVersion>1</ReleaseVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
