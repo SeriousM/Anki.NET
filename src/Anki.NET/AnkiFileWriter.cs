@@ -226,7 +226,7 @@ public class AnkiFileWriter
                 "", // string Tags, // Space separated with spaces at beginning and end
                 n.Fields, // string[] Fields,
                 n.Fields[0], // string SortField, // TODO Check this is correct
-                0, // long FieldChecksum, // integer representation of first 8 digits of sha1 hash of the first field
+                ChecksumUtils.Checksum(n.Fields[0]), // long FieldChecksum, // integer representation of first 8 digits of sha1 hash of the first field
                 0, // long Flags, // Unused
                 "" // string Data // Unused
             )).ToArray(),
