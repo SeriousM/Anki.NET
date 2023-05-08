@@ -5,21 +5,37 @@ namespace AnkiNet.database;
 
 internal class CardRepository : SqliteRepository<card>
 {
-    protected override string TableName => "[cards]";
+    protected override string TableName => "cards";
 
-    protected override string Columns =>
-        "[id], [nid], [did], [ord], [mod], " +
-        "[usn], [type], [queue], [due], [ivl], " +
-        "[factor], [reps], [lapses], [left], [odue]," +
-        "[odid], [flags], [data]";
+    protected override string[] Columns =>
+        new[]
+        {
+            "id", "nid", "did", "ord", "mod",
+            "usn", "type", "queue", "due", "ivl",
+            "factor", "reps", "lapses", "left", "odue",
+            "odid", "flags", "data"
+        };
 
-    protected override string GetValues(card i)
+    protected override IEnumerable<SqliteParameter> GetParameters(card i)
     {
-        return
-            $"{i.id},{i.nid},{i.did},{i.ord},{i.mod}," +
-            $"{i.usn},{i.type},{i.queue},{i.due},{i.ivl}," +
-            $"{i.factor},{i.reps},{i.lapses},{i.left},{i.odue}," +
-            $"{i.odid},{i.flags},'{i.data}'";
+        yield return new SqliteParameter("@id", i.id);
+        yield return new SqliteParameter("@nid", i.nid);
+        yield return new SqliteParameter("@did", i.did);
+        yield return new SqliteParameter("@ord", i.ord);
+        yield return new SqliteParameter("@mod", i.mod);
+        yield return new SqliteParameter("@usn", i.usn);
+        yield return new SqliteParameter("@type", i.type);
+        yield return new SqliteParameter("@queue", i.queue);
+        yield return new SqliteParameter("@due", i.due);
+        yield return new SqliteParameter("@ivl", i.ivl);
+        yield return new SqliteParameter("@factor", i.factor);
+        yield return new SqliteParameter("@reps", i.reps);
+        yield return new SqliteParameter("@lapses", i.lapses);
+        yield return new SqliteParameter("@left", i.left);
+        yield return new SqliteParameter("@odue", i.odue);
+        yield return new SqliteParameter("@odid", i.odid);
+        yield return new SqliteParameter("@flags", i.flags);
+        yield return new SqliteParameter("@data", i.data);
     }
 
     protected override card Map(SqliteDataReader reader)

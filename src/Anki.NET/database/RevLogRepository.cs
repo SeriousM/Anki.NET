@@ -5,17 +5,22 @@ namespace AnkiNet.database;
 
 internal class RevLogRepository : SqliteRepository<revLog>
 {
-    protected override string TableName => "[revlog]";
+    protected override string TableName => "revlog";
 
-    protected override string Columns =>
-        "[id], [cid], [usn], [ease], [ivl], " +
-        "[lastIvl], [factor], [time], [type]";
+    protected override string[] Columns =>
+        new[] { "id", "cid", "usn", "ease", "ivl", "lastIvl", "factor", "time", "type" };
 
-    protected override string GetValues(revLog i)
+    protected override IEnumerable<SqliteParameter> GetParameters(revLog i)
     {
-        return
-            $"{i.id},{i.cid},{i.usn},{i.ease},{i.ivl}," +
-            $"{i.lastIvl},{i.factor},{i.time},{i.type}";
+        yield return new SqliteParameter("@id", i.id);
+        yield return new SqliteParameter("@cid", i.cid);
+        yield return new SqliteParameter("@usn", i.usn);
+        yield return new SqliteParameter("@ease", i.ease);
+        yield return new SqliteParameter("@ivl", i.ivl);
+        yield return new SqliteParameter("@lastIvl", i.lastIvl);
+        yield return new SqliteParameter("@factor", i.factor);
+        yield return new SqliteParameter("@time", i.time);
+        yield return new SqliteParameter("@type", i.type);
     }
 
     protected override revLog Map(SqliteDataReader reader)

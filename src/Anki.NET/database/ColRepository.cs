@@ -5,19 +5,31 @@ namespace AnkiNet.database;
 
 internal class ColRepository : SqliteRepository<col>
 {
-    protected override string TableName => "[col]";
+    protected override string TableName => "col";
 
-    protected override string Columns =>
-        "[id], [crt], [mod], [scm], [ver], " +
-        "[dty], [usn], [ls], [conf], [models], " +
-        "[decks], [dconf], [tags]";
+    protected override string[] Columns =>
+        new[]
+        {
+            "id", "crt", "mod", "scm", "ver",
+            "dty", "usn", "ls", "conf", "models",
+            "decks", "dconf", "tags"
+        };
 
-    protected override string GetValues(col i)
+    protected override IEnumerable<SqliteParameter> GetParameters(col i)
     {
-        return
-            $"{i.id},{i.crt},{i.mod},{i.scm},{i.ver}," +
-            $"{i.dty},{i.usn},{i.ls},'{i.conf}','{i.models}'," +
-            $"'{i.decks}','{i.dconf}','{i.tags}'";
+        yield return new SqliteParameter("@id", i.id);
+        yield return new SqliteParameter("@crt", i.crt);
+        yield return new SqliteParameter("@mod", i.mod);
+        yield return new SqliteParameter("@scm", i.scm);
+        yield return new SqliteParameter("@ver", i.ver);
+        yield return new SqliteParameter("@dty", i.dty);
+        yield return new SqliteParameter("@usn", i.usn);
+        yield return new SqliteParameter("@ls", i.ls);
+        yield return new SqliteParameter("@conf", i.conf);
+        yield return new SqliteParameter("@models", i.models);
+        yield return new SqliteParameter("@decks", i.decks);
+        yield return new SqliteParameter("@dconf", i.dconf);
+        yield return new SqliteParameter("@tags", i.tags);
     }
 
     protected override col Map(SqliteDataReader reader)

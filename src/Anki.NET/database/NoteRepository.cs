@@ -5,21 +5,30 @@ namespace AnkiNet.database;
 
 internal class NoteRepository : SqliteRepository<note>
 {
-    protected override string TableName => "[notes]";
+    protected override string TableName => "notes";
 
-    protected override string Columns =>
-        "[id], [guid], [mid], " +
-        "[mod], [usn], [tags], " +
-        "[flds], [sfld], [csum], " +
-        "[flags], [data]";
+    protected override string[] Columns =>
+      new[]
+      {
+        "id", "guid", "mid",
+        "mod", "usn", "tags",
+        "flds", "sfld", "csum",
+        "flags", "data"
+      };
 
-    protected override string GetValues(note i)
+    protected override IEnumerable<SqliteParameter> GetParameters(note i)
     {
-        return
-            $"{i.id},'{i.guid}',{i.mid}," +
-            $"{i.mod},{i.usn},'{i.tags}'," +
-            $"'{i.flds}','{i.sfld}',{i.csum}," +
-            $"{i.flags},'{i.data}'";
+        yield return new SqliteParameter("@id", i.id);
+        yield return new SqliteParameter("@guid", i.guid);
+        yield return new SqliteParameter("@mid", i.mid);
+        yield return new SqliteParameter("@mod", i.mod);
+        yield return new SqliteParameter("@usn", i.usn);
+        yield return new SqliteParameter("@tags", i.tags);
+        yield return new SqliteParameter("@flds", i.flds);
+        yield return new SqliteParameter("@sfld", i.sfld);
+        yield return new SqliteParameter("@csum", i.csum);
+        yield return new SqliteParameter("@flags", i.flags);
+        yield return new SqliteParameter("@data", i.data);
     }
 
     protected override note Map(SqliteDataReader reader)

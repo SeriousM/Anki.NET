@@ -5,13 +5,15 @@ namespace AnkiNet.database;
 
 internal class GraveRepository : SqliteRepository<grave>
 {
-    protected override string TableName => "[graves]";
+    protected override string TableName => "graves";
 
-    protected override string Columns => "[usn], [oid], [type]";
+    protected override string[] Columns => new[] { "usn", "oid", "type" };
 
-    protected override string GetValues(grave i)
+    protected override IEnumerable<SqliteParameter> GetParameters(grave i)
     {
-        return $"{i.usn},{i.oid},{i.type}";
+        yield return new SqliteParameter("@usn", i.usn);
+        yield return new SqliteParameter("@oid", i.oid);
+        yield return new SqliteParameter("@type", i.type);
     }
 
     protected override grave Map(SqliteDataReader reader)

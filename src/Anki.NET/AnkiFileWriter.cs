@@ -1,7 +1,5 @@
 ﻿using System.IO.Compression;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
 using AnkiNet.database;
 using AnkiNet.database.model;
 using AnkiNet.mapper;
@@ -263,17 +261,17 @@ public class AnkiFileWriter
             var graves = ReadResource("AnkiNet.database.sql.GravesTable.sql");
             var indexes = ReadResource("AnkiNet.database.sql.Indexes.sql");
 
-            using var colCommand = new SqliteCommand(col, conn);
+            await using var colCommand = new SqliteCommand(col, conn);
             colCommand.ExecuteNonQuery();
-            using var notesCommand = new SqliteCommand(notes, conn);
+            await using var notesCommand = new SqliteCommand(notes, conn);
             notesCommand.ExecuteNonQuery();
-            using var cardsCommand = new SqliteCommand(cards, conn);
+            await using var cardsCommand = new SqliteCommand(cards, conn);
             cardsCommand.ExecuteNonQuery();
-            using var revLogsCommand = new SqliteCommand(revLogs, conn);
+            await using var revLogsCommand = new SqliteCommand(revLogs, conn);
             revLogsCommand.ExecuteNonQuery();
-            using var gravesCommand = new SqliteCommand(graves, conn);
+            await using var gravesCommand = new SqliteCommand(graves, conn);
             gravesCommand.ExecuteNonQuery();
-            using var indexesCommand = new SqliteCommand(indexes, conn);
+            await using var indexesCommand = new SqliteCommand(indexes, conn);
             indexesCommand.ExecuteNonQuery();
 
             var dbExtract = ConvertModelsToDb(collection);
