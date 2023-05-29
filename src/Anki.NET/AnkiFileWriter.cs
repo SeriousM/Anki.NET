@@ -47,11 +47,11 @@ public class AnkiFileWriter
         var result = new Collection(
             collection.Id,
             0, // Creation date
-            0, // Last modified date
+            ToUnixTimeMilliseconds(), // Last modified date
             0, // Schema modification date
             11, // Version
             0, // Dirty
-            0, // Update Sequence Number
+            ToUnixTimeMilliseconds(), // Update Sequence Number
             0, // Last sync date
             new model.json.JsonConfiguration
             {
@@ -79,11 +79,11 @@ public class AnkiFileWriter
                 {
                     Id = nt.Id,
                     Name = nt.Name,
-                    ModificationTime = 0,
+                    ModificationTime = ToUnixTimeMilliseconds(),
                     Css = nt.Css ?? string.Empty,
                     DefaultDeckId = null,
                     ModelType = 0,
-                    UpdateSequenceNumber = 0,
+                    UpdateSequenceNumber = ToUnixTimeMilliseconds(),
                     LegacyVersionNumber = null,
                     LatexPost = "\\end{ document }",
                     LatexPre = "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
@@ -126,9 +126,9 @@ public class AnkiFileWriter
                 d => new model.json.JsonDeck
                 {
                     Id = d.Id,
-                    LastModificationTime = 0,
+                    LastModificationTime = ToUnixTimeMilliseconds(),
                     Name = d.Name,
-                    UpdateSequenceNumber = 0,
+                    UpdateSequenceNumber = ToUnixTimeMilliseconds(),
                     NewToday = new[] { 0, 0 },
                     ReviewedToday = new[] { 0, 0 },
                     LearnedToday = new[] { 0, 0 },
@@ -149,9 +149,9 @@ public class AnkiFileWriter
                     new model.json.JsonDeckConfguration
                     {
                         Id = 1,
-                        LastModificationTime = 0,
+                        LastModificationTime = ToUnixTimeMilliseconds(),
                         Name = "Default",
-                        UpdateSequenceNumber = 0,
+                        UpdateSequenceNumber = ToUnixTimeMilliseconds(),
                         AutoplayQuestionAudio = true,
                         ReplayQuestionAudio = true,
                         ShowTimer = 0,
@@ -198,8 +198,8 @@ public class AnkiFileWriter
                 c.Note.Id, // long NoteId
                 deckIdByCardId[c.Id], // long DeckId, // From col table
                 c.NoteCardTypeOrdinal, // long Ordinal,
-                0, // long ModificationTime, // TODO Convert to DateTime?
-                0, // long UpdateSequenceNumber,
+                ToUnixTimeMilliseconds(), // long ModificationTime, // TODO Convert to DateTime?
+                ToUnixTimeMilliseconds(), // long UpdateSequenceNumber,
                 0, // CardLearningType LearningType,
                 0, // long Queue,
                 0, // long Due,
@@ -219,12 +219,12 @@ public class AnkiFileWriter
                 n.Id,
                 n.Guid, // string Guid,
                 n.NoteTypeId, // long ModelId,
-                0, // long ModificationDateTime, // TODO Convert to DateTime?
-                0, // long UpdateSequenceNumber,
-                "", // string Tags, // Space separated with spaces at beginning and end
+                ToUnixTimeMilliseconds(), // long ModificationDateTime, // TODO Convert to DateTime?
+                ToUnixTimeMilliseconds(), // long UpdateSequenceNumber,
+                n.Tags.Count == 0 ? "" : (" " + string.Join(" ", n.Tags.Select(t => t.Trim())) + " "), // string Tags, // Space separated with spaces at beginning and end
                 n.Fields, // string[] Fields,
                 n.Fields[0], // string SortField, // TODO Check this is correct
-                ChecksumUtils.Checksum(n.Fields[0]), // long FieldChecksum, // integer representation of first 8 digits of sha1 hash of the first field
+                n.FieldChecksum != 0 ? n.FieldChecksum : ChecksumUtils.Checksum(n.Fields[0]), // long FieldChecksum, // integer representation of first 8 digits of sha1 hash of the first field
                 0, // long Flags, // Unused
                 "" // string Data // Unused
             )).ToArray(),
@@ -233,6 +233,11 @@ public class AnkiFileWriter
         };
 
         return result;
+    }
+
+    private static long ToUnixTimeMilliseconds()
+    {
+        return DateTimeOffset.UtcNow.AddYears(-50).ToUnixTimeSeconds();
     }
 
     private static string ReadResource(string path)

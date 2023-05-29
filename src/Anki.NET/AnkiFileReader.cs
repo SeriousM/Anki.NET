@@ -161,7 +161,10 @@ public class AnkiFileReader
             var ankiNote = new AnkiNote {
                 Id = card.NoteId,
                 NoteTypeId = noteTypeId,
-                Fields = fieldValues
+                Fields = fieldValues,
+                Guid = note.Guid,
+                Tags = (note.Tags ?? "").Split(' ').ToList(),
+                FieldChecksum = note.FieldChecksum
             };
             var newCard = new AnkiCard {
                 Id = cardId,
