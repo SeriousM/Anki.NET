@@ -237,7 +237,7 @@ public class AnkiFileWriter
 
     private static long ToUnixTimeMilliseconds()
     {
-        return DateTimeOffset.UtcNow.AddYears(-50).ToUnixTimeSeconds();
+        return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 
     private static string ReadResource(string path)
